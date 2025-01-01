@@ -1,0 +1,27 @@
+ARG SOURCE_VERSION
+
+FROM wardenenv/mariadb:${SOURCE_VERSION} as mariadb-setup
+
+ENV MYSQL_DATABASE magento
+ENV MYSQL_PASSWORD magento
+ENV MYSQL_ROOT_PASSWORD magento
+ENV MYSQL_USER magento
+ENV MYSQL_INIT_ONLY 1
+
+# Prevent executing server on build run
+RUN ["sed", "-i", "s/exec \\\"$@\\\"/ /", "/usr/local/bin/docker-entrypoint.sh"]
+RUN /usr/bin/install -m 0775 -o mysql -g root -d /setup/
+COPY dump.sql /docker-entrypoint-initdb.d/
+
+RUN ["docker-entrypoint.sh", "mariadbd"]
+
+RUN mv /var/lib/mysql /setup/db
+
+FROM wardenenv/mariadb:${SOURCE_VERSION}
+
+ENV MYSQL_DATABASE magento
+ENV MYSQL_PASSWORD magento
+ENV MYSQL_ROOT_PASSWORD magento
+ENV MYSQL_USER magento
+
+COPY --from=mariadb-setup /setup/db /var/lib/mysql

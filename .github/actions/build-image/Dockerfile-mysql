@@ -1,0 +1,32 @@
+ARG SOURCE_VERSION
+
+FROM wardenenv/mysql:${SOURCE_VERSION} as mysql-setup
+
+ENV MYSQL_DATABASE magento
+ENV MYSQL_PASSWORD magento
+ENV MYSQL_ROOT_PASSWORD magento
+ENV MYSQL_USER magento
+ENV MYSQL_INIT_ONLY 1
+
+USER root
+# Prevent executing server on build run
+RUN ["sed", "-i", "s/exec \\\"$@\\\"/ /", "/usr/local/bin/docker-entrypoint.sh"]
+RUN /usr/bin/install -m 0775 -o mysql -g root -d /setup/
+USER mysql
+
+COPY dump.sql /docker-entrypoint-initdb.d/
+
+RUN ["docker-entrypoint.sh", "mysqld"]
+
+USER root
+RUN mv /var/lib/mysql /setup/db
+USER mysql
+
+FROM wardenenv/mysql:${SOURCE_VERSION}
+
+ENV MYSQL_DATABASE magento
+ENV MYSQL_PASSWORD magento
+ENV MYSQL_ROOT_PASSWORD magento
+ENV MYSQL_USER magento
+
+COPY --from=mysql-setup /setup/db /var/lib/mysql

@@ -1,0 +1,16 @@
+name: Generate Matrix of Magento Versions
+description: Generates single database version per Magento release for both MariaDB and MySQL
+author: Ivan Chepurnyi <ivan@ecom.dev>
+inputs:
+  version:
+    required: false
+    description: Specify version of magento to build instead of all versions
+  variation:
+    required: false
+    description: Specify variation of magento to build instead of all variation
+outputs:
+  magento:
+    description: JSON with versions of Magento to build with all variations
+runs:
+  using: node20
+  main: dist/index.js

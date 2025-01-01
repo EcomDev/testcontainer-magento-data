@@ -1,0 +1,47 @@
+name: Build Magento Data Artifact
+description: Generates single database version per Magento release for both MariaDB and MySQL
+author: Ivan Chepurnyi <ivan@ecom.dev>
+inputs:
+  mariadb:
+    description: Version of MariaDB container
+    required: true
+  opensearch:
+    description: Version of Opensearch container
+    required: true
+  php:
+    description: Version of PHP container
+    required: true
+  version:
+    description: Version of Magento install
+    required: true
+  kind:
+    required: false
+    description: Type of install (default, sampledata)
+    default: default
+  artifact:
+    required: true
+    description: Name of the artifact directory
+  composerRepository:
+    required: false
+    default: https://mirror.mage-os.org/
+    description: Composer repository for installation
+  composerAuth:
+    required: false
+    description: COMPOSER_AUTH value
+    default: "{}"
+  containers:
+    required: false
+    description: JSON with containers that are going to be generated
+    default: "[]"
+  stability:
+    required: false
+    description: Preferred stability for composer packages
+    default: "stable"
+outputs:
+  containers:
+    description: "Container configuration JSON"
+  artifact:
+    description: "Name of the artifact"
+runs:
+  using: node20
+  main: dist/index.js

@@ -1,0 +1,27 @@
+{
+  "name": "generate-matrix-action",
+  "version": "1.0.0",
+  "description": "Generates matrix of node files",
+  "author": "Ivan Chepurnyi <ivan@ecom.dev>",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@actions/core": "^1.11.1",
+    "semver": "^7.6.3"
+  },
+  "devDependencies": {
+    "prettier": "^3.4.2",
+    "@vercel/ncc": "^0.38.3"
+  },
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "scripts": {
+    "format:write": "npx prettier --write .",
+    "format:check": "npx prettier --check .",
+    "package": "npx ncc build src/index.js -o dist --source-map --license licenses.txt"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,0 +1,43 @@
+services:
+  db:
+    command:
+      - mariadbd
+      - --max_allowed_packet=1024M
+      - --explicit_defaults_for_timestamp=on
+    environment:
+      MYSQL_DATABASE: magento
+      MYSQL_PASSWORD: magento
+      MYSQL_ROOT_PASSWORD: magento
+      MYSQL_USER: magento
+    image: docker.io/wardenenv/mariadb:${MARIADB_VERSION:-10.6}
+    healthcheck:
+      timeout: 120s
+      test: mariadb -umagento -pmagento magento -e 'select 1'
+  php-fpm:
+    depends_on:
+      db:
+        condition: service_started
+        required: true
+    environment:
+      COMPOSER_MEMORY_LIMIT: "-1"
+      COMPOSER_VERSION: "2"
+      COMPOSER_AUTH: ${COMPOSER_AUTH:-{}}
+      MAGE_DEBUG_SHOW_ARGS: "1"
+      TRAEFIK_DOMAIN: ${DOMAIN_NAME:-magento.test}
+      TRAEFIK_SUBDOMAIN: ""
+      NODE_VERSION: "16"
+    image: docker.io/wardenenv/php-fpm:${PHP_VERSION:-8.3}-magento2
+    volumes:
+      - ${HOME}/.composer:/home/www-data/.composer
+    healthcheck:
+      test: bash -c "[ -f /usr/bin/composer ]"
+  opensearch:
+    environment:
+      DISABLE_SECURITY_PLUGIN: "true"
+      OPENSEARCH_JAVA_OPTS: -Xms64m -Xmx512m
+      discovery.type: single-node
+    image: docker.io/wardenenv/opensearch:${OPENSEARCH_VERSION:-2.12}
+    volumes:
+      - opensearch:/usr/share/opensearch/data
+volumes:
+  opensearch:

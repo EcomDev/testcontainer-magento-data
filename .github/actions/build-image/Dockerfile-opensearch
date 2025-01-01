@@ -1,0 +1,6 @@
+ARG SOURCE_VERSION
+
+FROM wardenenv/opensearch:${SOURCE_VERSION}
+
+RUN rm -rf /usr/share/opensearch/data
+COPY search/ /usr/share/opensearch/data

@@ -1,0 +1,78 @@
+name: Docker
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+on:
+  schedule:
+    - cron: '27 7 * * *'
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+    inputs:
+      magentoVersion:
+        description: 'Magento Version to limit execution to'
+        required: false
+        default: '2.4.6-p2'
+      magentoVariation:
+        description: 'Magento Variation to limit execution to'
+        required: false
+        default: default
+jobs:
+  generate-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      magento: ${{ steps.matrix.outputs.magento }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/generate-matrix
+        id: matrix
+        with:
+          version: ${{ inputs.magentoVersion }}
+          variation: ${{ inputs.magentoVariation }}
+  build-magento:
+    runs-on: ubuntu-latest
+    needs: generate-matrix
+    strategy:
+      matrix:
+        include: ${{ fromJson(needs.generate-matrix.outputs.magento) }}
+    outputs:
+      containers: ${{ steps.build.outputs.containers }}
+      artifact: ${{ steps.build.outputs.artifact }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/build-magento
+        with:
+          artifact: ${{ matrix.artifact }}
+          mariadb: ${{ matrix.mariadb }}
+          opensearch: ${{ matrix.opensearch }}
+          php: ${{ matrix.php }}
+          version: ${{ matrix.magentoVersion }}
+          kind: ${{ matrix.kind }}
+          containers: ${{ matrix.containers }}
+          stability: ${{ matrix.stability }}
+          composerAuth: ${{ secrets.COMPOSER_AUTH }}
+          composerRepository: 'https://repo.magento.com/'
+        id: build
+#  build-container:
+#    runs-on: ubuntu-latest
+#    needs: build-magento
+#    permissions:
+#      contents: read
+#      packages: write
+#      id-token: write
+#    strategy:
+#      matrix:
+#        include: ${{ fromJson(needs.build-magento.outputs.containers) }}
+#    steps:
+#      - uses: actions/checkout@v4
+#      - uses: ./.github/actions/build-image
+#        with:
+#          artifact: ${{ needs.build-magento.outputs.artifact }}
+#          containerType: ${{ matrix.containerType }}
+#          imageName: ${{ github.repository_owner }}/testcontainer-magento-${{ matrix.containerType }}
+#          imageTags: ${{ matrix.tag }}
+#          username: ${{ github.actor }}
+#          password: ${{ secrets.GITHUB_TOKEN }}
+#          version: ${{ matrix.version }}
+#          push: ${{ github.event_name != 'pull_request' }}
