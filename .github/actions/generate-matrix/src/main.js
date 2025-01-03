@@ -16,7 +16,7 @@ export async function run() {
         const normalizedVersion = semver.coerce(version);
         if (
           variation.condition &&
-          !semver.satisfies(normalizedVersion, variation.condition)
+          !semver.satisfies(normalizedVersion, variation.condition, true)
         ) {
           continue;
         }

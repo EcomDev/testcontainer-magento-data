@@ -28269,7 +28269,7 @@ async function run() {
         const normalizedVersion = semver_default().coerce(version);
         if (
           variation.condition &&
-          !semver_default().satisfies(normalizedVersion, variation.condition)
+          !semver_default().satisfies(normalizedVersion, variation.condition, true)
         ) {
           continue;
         }
