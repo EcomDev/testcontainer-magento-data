@@ -11,6 +11,8 @@ inputs:
 outputs:
   magento:
     description: JSON with versions of Magento to build with all variations
+  containers:
+    description: JSON with container build specification based on Magento artifacts
 runs:
   using: node20
   main: dist/index.js

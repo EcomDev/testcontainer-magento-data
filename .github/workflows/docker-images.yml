@@ -26,6 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       magento: ${{ steps.matrix.outputs.magento }}
+      containers: ${{ steps.matrix.outputs.containers }}
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/generate-matrix
@@ -39,9 +40,6 @@ jobs:
     strategy:
       matrix:
         include: ${{ fromJson(needs.generate-matrix.outputs.magento) }}
-    outputs:
-      containers: ${{ steps.build.outputs.containers }}
-      artifact: ${{ steps.build.outputs.artifact }}
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/build-magento
@@ -52,14 +50,13 @@ jobs:
           php: ${{ matrix.php }}
           version: ${{ matrix.magentoVersion }}
           kind: ${{ matrix.kind }}
-          containers: ${{ matrix.containers }}
           stability: ${{ matrix.stability }}
           composerAuth: ${{ secrets.COMPOSER_AUTH }}
           composerRepository: 'https://repo.magento.com/'
         id: build
   build-container:
     runs-on: ubuntu-latest
-    needs: build-magento
+    needs: [generate-matrix, build-magento]
     permissions:
       packages: write
       contents: read
@@ -67,12 +64,12 @@ jobs:
       id-token: write
     strategy:
       matrix:
-        include: ${{ fromJson(needs.build-magento.outputs.containers) }}
+        include: ${{ fromJson(needs.generate-matrix.outputs.containers) }}
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/build-image
         with:
-          artifact: ${{ needs.build-magento.outputs.artifact }}
+          artifact: ${{ matrix.artifact }}
           containerType: ${{ matrix.containerType }}
           imageName: ${{ github.repository_owner }}/testcontainer-magento-${{ matrix.containerType }}
           imageTags: ${{ matrix.tag }}

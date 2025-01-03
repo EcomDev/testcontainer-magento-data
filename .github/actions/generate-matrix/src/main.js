@@ -4,6 +4,7 @@ import semver from "semver";
 
 export async function run() {
   const magento = [];
+  const containers = [];
   const requestedVersion = getInput("version");
   const requestedVariation = getInput("variation");
   for (const variation of variations) {
@@ -32,6 +33,28 @@ export async function run() {
         }
 
         const joinTags = (tags) => tags.map((v) => `type=raw,${v}`).join(",");
+        containers.push(
+          ...[
+            {
+              artifact: version + variation.suffix,
+              tag: joinTags(tags),
+              containerType: "mysql",
+              version: context.mysql,
+            },
+            {
+              artifact: version + variation.suffix,
+              tag: joinTags(tags),
+              containerType: "mariadb",
+              version: context.mariadb,
+            },
+            {
+              artifact: version + variation.suffix,
+              tag: joinTags(tags),
+              containerType: "opensearch",
+              version: context.opensearch,
+            },
+          ],
+        );
 
         magento.push({
           artifact: version + variation.suffix,
@@ -41,23 +64,6 @@ export async function run() {
           kind: variation.kind,
           magentoVersion: version,
           stability: context.stability ? context.stability : "stable",
-          containers: JSON.stringify([
-            {
-              tag: joinTags(tags),
-              containerType: "mysql",
-              version: context.mysql,
-            },
-            {
-              tag: joinTags(tags),
-              containerType: "mariadb",
-              version: context.mariadb,
-            },
-            {
-              tag: joinTags(tags),
-              containerType: "opensearch",
-              version: context.opensearch,
-            },
-          ]),
         });
       }
     }
@@ -70,6 +76,7 @@ export async function run() {
     return;
   }
   setOutput("magento", JSON.stringify(magento));
+  setOutput("containers", JSON.stringify(containers));
   info(
     `Successfully generated matrix for execution with versions: ${magento.map((v) => v.magentoVersion).join(",")}`,
   );

@@ -32,9 +32,6 @@ export async function run(actionPath) {
         artifactDir,
       );
     });
-
-    setOutput("containers", getInput("containers"));
-    setOutput("artifact", getInput("artifact"));
   } catch (e) {
     error(`Failed to install Magento: ${e}`);
     throw e;

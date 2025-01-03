@@ -28257,6 +28257,7 @@ var semver_default = /*#__PURE__*/__nccwpck_require__.n(semver);
 
 async function run() {
   const magento = [];
+  const containers = [];
   const requestedVersion = (0,core.getInput)("version");
   const requestedVariation = (0,core.getInput)("variation");
   for (const variation of variations) {
@@ -28285,6 +28286,28 @@ async function run() {
         }
 
         const joinTags = (tags) => tags.map((v) => `type=raw,${v}`).join(",");
+        containers.push(
+          ...[
+            {
+              artifact: version + variation.suffix,
+              tag: joinTags(tags),
+              containerType: "mysql",
+              version: context.mysql,
+            },
+            {
+              artifact: version + variation.suffix,
+              tag: joinTags(tags),
+              containerType: "mariadb",
+              version: context.mariadb,
+            },
+            {
+              artifact: version + variation.suffix,
+              tag: joinTags(tags),
+              containerType: "opensearch",
+              version: context.opensearch,
+            },
+          ],
+        );
 
         magento.push({
           artifact: version + variation.suffix,
@@ -28294,23 +28317,6 @@ async function run() {
           kind: variation.kind,
           magentoVersion: version,
           stability: context.stability ? context.stability : "stable",
-          containers: JSON.stringify([
-            {
-              tag: joinTags(tags),
-              containerType: "mysql",
-              version: context.mysql,
-            },
-            {
-              tag: joinTags(tags),
-              containerType: "mariadb",
-              version: context.mariadb,
-            },
-            {
-              tag: joinTags(tags),
-              containerType: "opensearch",
-              version: context.opensearch,
-            },
-          ]),
         });
       }
     }
@@ -28323,6 +28329,7 @@ async function run() {
     return;
   }
   (0,core.setOutput)("magento", JSON.stringify(magento));
+  (0,core.setOutput)("containers", JSON.stringify(containers));
   (0,core.info)(
     `Successfully generated matrix for execution with versions: ${magento.map((v) => v.magentoVersion).join(",")}`,
   );

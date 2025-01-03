@@ -29,10 +29,6 @@ inputs:
     required: false
     description: COMPOSER_AUTH value
     default: "{}"
-  containers:
-    required: false
-    description: JSON with containers that are going to be generated
-    default: "[]"
   stability:
     required: false
     description: Preferred stability for composer packages
