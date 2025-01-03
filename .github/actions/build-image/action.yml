@@ -34,12 +34,6 @@ runs:
       run: mkdir -p artifact/
       shell: bash
 
-    - name: Install cosign
-      if: inputs.push != 'false'
-      uses: sigstore/cosign-installer@59acb6260d9c0ba8f4a2f9d9b48431a222b68e20 #v3.5.0
-      with:
-        cosign-release: 'v2.2.4'
-
     - name: Download artifact
       uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16
       with:
@@ -87,11 +81,10 @@ runs:
         cache-from: type=gha
         cache-to: type=gha,mode=max
         build-args: SOURCE_VERSION=${{ inputs.version }}
-
-    - name: Sign the published Docker image
-      if: ${{ github.event_name != 'pull_request' }}
-      env:
-        TAGS: ${{ steps.meta.outputs.tags }}
-        DIGEST: ${{ steps.build-and-push.outputs.digest }}
-      run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
-      shell: bash
+    - name: Generate artifact attestation
+      if: ${{ inputs.push != 'false' }}
+      uses: actions/attest-build-provenance@v2
+      with:
+        subject-name: ${{ inputs.registry }}/${{ inputs.imageName }}
+        subject-digest: ${{ steps.build-and-push.outputs.digest }}
+        push-to-registry: ${{ inputs.push != 'false' }}
