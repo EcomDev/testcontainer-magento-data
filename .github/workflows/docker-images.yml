@@ -9,7 +9,7 @@ on:
   push:
     branches: [ "main" ]
     paths:
-      - .github/actions/
+      - '.github/actions/**'
       - .github/workflows/docker-images.yml
   workflow_dispatch:
     inputs:
