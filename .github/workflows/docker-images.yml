@@ -8,6 +8,9 @@ on:
     - cron: '27 7 * * *'
   push:
     branches: [ "main" ]
+    paths:
+      - .github/actions/
+      - .github/workflows/docker-images.yml
   workflow_dispatch:
     inputs:
       magentoVersion:
