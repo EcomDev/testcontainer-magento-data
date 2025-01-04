@@ -11,7 +11,16 @@ class DbContainerTest extends TestCase
 {
     private function createConnection(DbConnectionSettings $connectionSettings): PDO
     {
-        return new PDO($connectionSettings->dsn(), $connectionSettings->user, $connectionSettings->password);
+        return new PDO(
+            $connectionSettings->dsn(),
+            $connectionSettings->user,
+            $connectionSettings->password,
+            [
+                'attributes' => [
+                    PDO::ATTR_STRINGIFY_FETCHES => false,
+                ]
+            ]
+        );
     }
 
     #[Test]
@@ -24,8 +33,6 @@ class DbContainerTest extends TestCase
         $connectionSettings = $container->getConnectionSettings();
 
         $connection = $this->createConnection($connectionSettings);
-        $connection->setAttribute(PDO::ATTR_STRINGIFY_FETCHES, false);
-
         $result = $connection->query('SELECT COUNT(*) FROM catalog_product_entity');
         $this->assertEquals(0, $result->fetch(PDO::FETCH_COLUMN));
     }
@@ -80,9 +87,10 @@ class DbContainerTest extends TestCase
 
     #[Test]
     #[Group("slow")]
-    public function loadsLatestSampleDataContainer()
+    public function loadsMagentoSampleDataContainer()
     {
         $container = DbContainerBuilder::mysql()
+            ->withMagentoVersion('2.4.7-p3')
             ->withSampleData()
             ->build();
 

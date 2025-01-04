@@ -50,6 +50,7 @@ class OpenSearchContainerTest extends TestCase
     {
         $container = OpenSearchContainerBuilder::new()
             ->withSampleData()
+            ->withMagentoVersion('2.4.7-p2')
             ->build();
 
         $client = new Client([
