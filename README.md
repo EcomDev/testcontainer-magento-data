@@ -1,4 +1,6 @@
 # 🐳 Test-Containers for Quick Magento Development
+[![Docker Build](https://github.com/EcomDev/testcontainer-magento-data/actions/workflows/docker-images.yml/badge.svg)](https://github.com/EcomDev/testcontainer-magento-data/actions/workflows/docker-images.yml)
+[![PHP Package](https://github.com/EcomDev/testcontainer-magento-data/actions/workflows/php-package.yml/badge.svg)](https://github.com/EcomDev/testcontainer-magento-data/actions/workflows/php-package.yml)
 
 This package simplifies the process of automated testing with real database and search engine
 
