@@ -2,6 +2,7 @@
 
 namespace EcomDev\TestContainers\MagentoData;
 
+use GuzzleHttp\Client;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -51,9 +52,41 @@ class OpenSearchContainerTest extends TestCase
             ->withSampleData()
             ->build();
 
+        $client = new Client([
+            'base_uri' => $container->getBaseUrl()
+        ]);
+
+        $result = json_decode(
+            $client->get('magento2_product_1/_count')->getBody()->getContents(),
+            true
+        );
+
         $this->assertEquals(
-            '',
-            file_get_contents($container->getBaseUrl() . '_cat/aliases?h=alias')
+            181,
+            $result['count']
+        );
+    }
+
+    #[Test]
+    #[Group("slow")]
+    public function sharedContainersSmokeTest()
+    {
+        $this->assertSame(
+            OpenSearchContainerBuilder::new()
+                ->withSampleData()
+                ->shared('instance1'),
+            OpenSearchContainerBuilder::new()
+                ->withSampleData()
+                ->shared('instance1'),
+        );
+
+        $this->assertNotSame(
+            OpenSearchContainerBuilder::new()
+                ->withSampleData()
+                ->shared('instance1'),
+            OpenSearchContainerBuilder::new()
+                ->withSampleData()
+                ->shared('instance2'),
         );
     }
 }

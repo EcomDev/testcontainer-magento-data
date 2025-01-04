@@ -8,20 +8,21 @@ final class OpenSearchContainer implements RunningContainer
 {
     private function __construct(private readonly ContainerWithVolume $container)
     {
-
     }
     public static function fromImage(string $imageName): self
     {
         $container = ContainerWithVolume::make($imageName);
-        $container->withWait(new WaitForLog('ready for connections'));
-        $container->run();
+        $container->withWait(new WaitForLog('Cluster health status changed from [RED]'))
+            ->withEnvironment('discovery.type', 'single-node')
+            ->withEnvironment('DISABLE_SECURITY_PLUGIN', 'true')
+            ->run();
 
         return new self($container);
     }
 
     public function getBaseUrl(): string
     {
-        return sprintf('https://%s:9200/', $this->getAddress());
+        return sprintf('http://%s:9200/', $this->getAddress());
     }
 
     public function getAddress(): string
@@ -43,5 +44,4 @@ final class OpenSearchContainer implements RunningContainer
     {
         $this->container->remove();
     }
-
 }

@@ -11,13 +11,13 @@ use ReturnTypeWillChange;
 final class DbContainerBuilder implements ContainerBuilder
 {
     use ContainerBuilderConfiguration;
+
     /**
      * Constructor method for initializing the class with specified parameters
      */
     private function __construct(
         private readonly string $type
     ) {
-
     }
 
     public static function mysql(): self
@@ -27,7 +27,7 @@ final class DbContainerBuilder implements ContainerBuilder
 
     public static function mariadb(): self
     {
-        return self::for( 'mariadb');
+        return self::for('mariadb');
     }
 
     public static function for($type): self

@@ -17,9 +17,7 @@ final class DbConnectionSettings
         public readonly string $password = self::DEFAULT_PASSWORD,
         public readonly string $database = self::DEFAULT_DATABASE,
         public readonly string $charset = self::DEFAULT_CHARSET,
-    )
-    {
-
+    ) {
     }
 
     public static function fromEnvironment(array $envVars, string $address): self
@@ -37,7 +35,10 @@ final class DbConnectionSettings
         if ($this->database) {
             return sprintf(
                 'mysql:host=%s;port=%d;dbname=%s;charset=%s',
-                $this->host, $this->port, $this->database, $this->charset
+                $this->host,
+                $this->port,
+                $this->database,
+                $this->charset
             );
         }
 

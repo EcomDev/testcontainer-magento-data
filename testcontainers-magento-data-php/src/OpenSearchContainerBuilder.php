@@ -8,7 +8,7 @@ final class OpenSearchContainerBuilder implements ContainerBuilder
 {
     use ContainerBuilderConfiguration;
 
-    public static function new():self
+    public static function new(): self
     {
         return new self();
     }
@@ -16,13 +16,16 @@ final class OpenSearchContainerBuilder implements ContainerBuilder
     #[ReturnTypeWillChange]
     public function build(): OpenSearchContainer
     {
-        // TODO: Implement build() method.
+        return OpenSearchContainer::fromImage($this->getImageName());
     }
 
     #[ReturnTypeWillChange]
     public function shared(string $id): OpenSearchContainer
     {
-        // TODO: Implement shared() method.
+        /** @var OpenSearchContainer $container */
+        $container = ContainerRegistry::findContainer($this->getImageName(), $id)
+            ?? ContainerRegistry::registerContainer($id, $this->build());
+        return $container;
     }
 
     public function getImageName(): string

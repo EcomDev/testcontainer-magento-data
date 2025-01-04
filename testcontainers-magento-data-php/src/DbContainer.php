@@ -10,7 +10,6 @@ final class DbContainer implements RunningContainer
 {
     private function __construct(private readonly ContainerWithVolume $container)
     {
-
     }
     public static function fromImage(string $imageName): self
     {
