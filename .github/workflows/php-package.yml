@@ -1,0 +1,24 @@
+name: PHP Package Tests
+on:
+  push:
+    paths:
+      - testcontainers-magento-data-php/**
+      - composer.json
+  pull_request:
+    paths:
+      - testcontainers-magento-data-php/**
+      - composer.json
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.3
+          tools: composer:v2
+      - run: composer install
+        shell: bash
+      - run: composer test
+        shell: bash
