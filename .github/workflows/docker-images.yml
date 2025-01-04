@@ -54,7 +54,7 @@ jobs:
           composerAuth: ${{ secrets.COMPOSER_AUTH }}
           composerRepository: 'https://repo.magento.com/'
         id: build
-  build-container:
+  build-container-amd64:
     runs-on: ubuntu-latest
     needs: [generate-matrix, build-magento]
     permissions:
@@ -65,13 +65,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform:
-          - linux/amd64
-          - linux/arm64
         include: ${{ fromJson(needs.generate-matrix.outputs.containers) }}
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/build-image
+      - name: Build linux/amd64 version of Docker image
+        uses: ./.github/actions/build-image
         with:
           artifact: ${{ matrix.artifact }}
           containerType: ${{ matrix.containerType }}
@@ -81,4 +79,30 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           version: ${{ matrix.version }}
           push: ${{ github.event_name != 'pull_request' }}
-          platforms: ${{ matrix.platform }}
+          platforms: 'linux/amd64'
+  build-container-arm64:
+    runs-on: ubuntu-latest
+    needs: [generate-matrix, build-magento]
+    permissions:
+      packages: write
+      contents: read
+      attestations: write
+      id-token: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJson(needs.generate-matrix.outputs.containers) }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build linux/amd64 version of Docker image
+        uses: ./.github/actions/build-image
+        with:
+          artifact: ${{ matrix.artifact }}
+          containerType: ${{ matrix.containerType }}
+          imageName: ${{ github.repository_owner }}/testcontainer-magento-${{ matrix.containerType }}
+          imageTags: ${{ matrix.tag }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          version: ${{ matrix.version }}
+          push: ${{ github.event_name != 'pull_request' }}
+          platforms: 'linux/arm64'
