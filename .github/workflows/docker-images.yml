@@ -1,4 +1,4 @@
-name: Docker
+name: Docker Build
 # This workflow uses actions that are not certified by GitHub.
 # They are provided by a third-party and are governed by
 # separate terms of service, privacy policy, and support
@@ -23,7 +23,7 @@ on:
         default: default
 jobs:
   generate-matrix:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     outputs:
       magento: ${{ steps.matrix.outputs.magento }}
       containers: ${{ steps.matrix.outputs.containers }}
@@ -35,7 +35,7 @@ jobs:
           version: ${{ inputs.magentoVersion }}
           variation: ${{ inputs.magentoVariation }}
   build-magento:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: generate-matrix
     strategy:
       matrix:
@@ -55,7 +55,7 @@ jobs:
           composerRepository: 'https://repo.magento.com/'
         id: build
   build-container:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [generate-matrix, build-magento]
     permissions:
       packages: write
