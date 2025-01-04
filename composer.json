@@ -6,7 +6,9 @@
         "testcontainers/testcontainers": "^0.2.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^11.5"
+        "phpunit/phpunit": "^11.5",
+        "ext-pdo": "*",
+        "brianium/paratest": "^7.7"
     },
     "license": "MIT",
     "autoload": {
@@ -20,7 +22,7 @@
         }
     },
     "scripts": {
-        "test": "phpunit testcontainers-magento-data-php/tests"
+        "test": "paratest testcontainers-magento-data-php/tests"
     },
     "authors": [
         {
@@ -28,8 +30,5 @@
             "email": "ivan.chepurnyi@ecomdev.org"
         }
     ],
-    "config": {
-        "vendor-dir": "testcontainers-magento-data-php/vendor"
-    },
     "minimum-stability": "stable"
 }

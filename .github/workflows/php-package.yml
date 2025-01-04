@@ -13,14 +13,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: php-actions/composer@v6
-        name: Install Dependencies
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
         with:
-          php_version: 8.3
-          version: 'latest'
-          command: 'install'
-      - uses: php-actions/composer@v6
-        name: Install Dependencies
-        with:
-          php_version: 8.3
-          command: 'test'
+          php-version: 8.3
+          tools: composer:v2
+      - run: composer install
+        shell: bash
+      - run: composer test
+        shell: bash
