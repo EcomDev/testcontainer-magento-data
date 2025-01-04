@@ -65,6 +65,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        platform:
+          - linux/amd64
+          - linux/arm64
         include: ${{ fromJson(needs.generate-matrix.outputs.containers) }}
     steps:
       - uses: actions/checkout@v4
@@ -78,3 +81,4 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           version: ${{ matrix.version }}
           push: ${{ github.event_name != 'pull_request' }}
+          platforms: ${{ matrix.platform }}

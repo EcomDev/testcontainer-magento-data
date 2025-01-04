@@ -27,6 +27,10 @@ inputs:
   version:
     required: true
     description: Base version of image to use
+  platforms:
+    required: false
+    description: Platforms Docker Image build
+    default: linux/amd64,linux/arm64
 runs:
   using: composite
   steps:
@@ -44,7 +48,10 @@ runs:
     - name: Unpack search directory
       run: |
         cd artifact
+        # Unpack search index data
         tar xzvf search.tgz
+        # Remove lock files from search instance
+        find ./search -type f -name '*.lock' | xargs rm
       shell: bash
 
     - name: Set up QEMU
@@ -77,7 +84,7 @@ runs:
         push: ${{ inputs.push != 'false' }}
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
-        platforms: linux/amd64,linux/arm64
+        platforms: ${{ inputs.platforms }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
         build-args: SOURCE_VERSION=${{ inputs.version }}
