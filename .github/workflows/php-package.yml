@@ -4,10 +4,12 @@ on:
     paths:
       - testcontainers-magento-data-php/**
       - composer.json
+      - .github/workflows/php-*
   pull_request:
     paths:
       - testcontainers-magento-data-php/**
       - composer.json
+      - .github/workflows/php-*
 jobs:
   format-check:
     name: Check PSR12 Standarts
