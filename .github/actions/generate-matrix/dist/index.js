@@ -28281,32 +28281,26 @@ async function run() {
 
         const tags = [version + variation.suffix];
 
+        const joinTags = (tags) => tags.map((v) => `type=raw,${v}`).join(",");
+
         if (context.latest === true && version === lastVersion) {
-          tags.push("latest" + variation.suffix);
+          containers.push(
+            ...containersForTag(
+              "latest" + variation.suffix,
+              version,
+              variation,
+              context,
+            ),
+          );
         }
 
-        const joinTags = (tags) => tags.map((v) => `type=raw,${v}`).join(",");
         containers.push(
-          ...[
-            {
-              artifact: version + variation.suffix,
-              tag: joinTags(tags),
-              containerType: "mysql",
-              version: context.mysql,
-            },
-            {
-              artifact: version + variation.suffix,
-              tag: joinTags(tags),
-              containerType: "mariadb",
-              version: context.mariadb,
-            },
-            {
-              artifact: version + variation.suffix,
-              tag: joinTags(tags),
-              containerType: "opensearch",
-              version: context.opensearch,
-            },
-          ],
+          ...containersForTag(
+            version + variation.suffix,
+            version,
+            variation,
+            context,
+          ),
         );
 
         magento.push({
@@ -28333,6 +28327,29 @@ async function run() {
   (0,core.info)(
     `Successfully generated matrix for execution with versions: ${magento.map((v) => v.magentoVersion).join(",")}`,
   );
+}
+
+function containersForTag(tag, version, variation, context) {
+  return [
+    {
+      artifact: version + variation.suffix,
+      tag: `type=raw,${tag}`,
+      containerType: "mysql",
+      version: context.mysql,
+    },
+    {
+      artifact: version + variation.suffix,
+      tag: `type=raw,${tag}`,
+      containerType: "mariadb",
+      version: context.mariadb,
+    },
+    {
+      artifact: version + variation.suffix,
+      tag: `type=raw,${tag}`,
+      containerType: "opensearch",
+      version: context.opensearch,
+    },
+  ];
 }
 
 
