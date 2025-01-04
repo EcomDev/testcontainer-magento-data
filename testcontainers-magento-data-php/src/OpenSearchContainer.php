@@ -2,11 +2,9 @@
 
 namespace EcomDev\TestContainers\MagentoData;
 
-use Testcontainers\Container\Container;
-use Testcontainers\Trait\DockerContainerAwareTrait;
 use Testcontainers\Wait\WaitForLog;
 
-final class DbContainer implements RunningContainer
+final class OpenSearchContainer implements RunningContainer
 {
     private function __construct(private readonly ContainerWithVolume $container)
     {
@@ -21,9 +19,9 @@ final class DbContainer implements RunningContainer
         return new self($container);
     }
 
-    public function getConnectionSettings(): DbConnectionSettings
+    public function getBaseUrl(): string
     {
-        return DbConnectionSettings::fromEnvironment($this->container->getEnvironmentVariables(), $this->getAddress());
+        return sprintf('https://%s:9200/', $this->getAddress());
     }
 
     public function getAddress(): string
@@ -45,4 +43,5 @@ final class DbContainer implements RunningContainer
     {
         $this->container->remove();
     }
+
 }

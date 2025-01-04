@@ -3,6 +3,7 @@
     "description": "TestContainers for Magento data in integration/functional tests",
     "type": "library",
     "require": {
+        "php": "^8.3",
         "testcontainers/testcontainers": "^0.2.0"
     },
     "require-dev": {
@@ -22,7 +23,8 @@
         }
     },
     "scripts": {
-        "test": "paratest testcontainers-magento-data-php/tests"
+        "test": "paratest testcontainers-magento-data-php/tests",
+        "unit": "paratest testcontainers-magento-data-php/tests --exclude-group=slow"
     },
     "authors": [
         {

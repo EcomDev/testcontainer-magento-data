@@ -20,4 +20,11 @@ interface RunningContainer
      * @return string
      */
     public function getId(): string;
+
+    /**
+     * Returns container image name
+     *
+     * @return string
+     */
+    public function getImageName(): string;
 }

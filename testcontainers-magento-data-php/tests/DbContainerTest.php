@@ -3,6 +3,7 @@
 namespace EcomDev\TestContainers\MagentoData;
 
 use PDO;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
@@ -14,6 +15,7 @@ class DbContainerTest extends TestCase
     }
 
     #[Test]
+    #[Group("slow")]
     public function startsLatestMySQLContainerByDefault()
     {
         $container = DbContainerBuilder::mysql()
@@ -29,6 +31,7 @@ class DbContainerTest extends TestCase
     }
 
     #[Test]
+    #[Group("slow")]
     public function killsContainerOnDestruct()
     {
         $container = DbContainerBuilder::mysql()
@@ -42,6 +45,7 @@ class DbContainerTest extends TestCase
     }
 
     #[Test]
+    #[Group("slow")]
     public function doesNotKillContainerWhenBuildAsShared()
     {
         $container = DbContainerBuilder::mysql()
@@ -56,6 +60,26 @@ class DbContainerTest extends TestCase
     }
 
     #[Test]
+    #[Group("slow")]
+    public function containersAreIdenticalWhenShared()
+    {
+        $this->assertSame(
+            DbContainerBuilder::mysql()
+                ->shared('container1'),
+            DbContainerBuilder::mysql()
+                ->shared('container1')
+        );
+
+        $this->assertNotSame(
+            DbContainerBuilder::mysql()
+                ->shared('container1'),
+            DbContainerBuilder::mysql()
+                ->shared('container2')
+        );
+    }
+
+    #[Test]
+    #[Group("slow")]
     public function loadsLatestSampleDataContainer()
     {
         $container = DbContainerBuilder::mysql()
