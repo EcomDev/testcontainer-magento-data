@@ -1,0 +1,35 @@
+{
+    "name": "ecomdev/testcontainers-magento-data",
+    "description": "TestContainers for Magento data in integration/functional tests",
+    "type": "library",
+    "require": {
+        "testcontainers/testcontainers": "^0.2.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.5"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "EcomDev\\TestContainers\\MagentoData\\": "testcontainers-magento-data-php/src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "EcomDev\\TestContainers\\MagentoData\\": "testcontainers-magento-data-php/tests"
+        }
+    },
+    "scripts": {
+        "test": "phpunit testcontainers-magento-data-php/tests"
+    },
+    "authors": [
+        {
+            "name": "Ivan Chepurnyi",
+            "email": "ivan.chepurnyi@ecomdev.org"
+        }
+    ],
+    "config": {
+        "vendor-dir": "testcontainers-magento-data-php/vendor"
+    },
+    "minimum-stability": "stable"
+}
