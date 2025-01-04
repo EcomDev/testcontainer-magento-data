@@ -2,7 +2,11 @@
 
 namespace EcomDev\TestContainers\MagentoData;
 
-class ContainerRegistry
+/**
+ * A class responsible for managing a registry of running containers,
+ * identified by their image name and a unique identifier.
+ */
+final class ContainerRegistry
 {
     private static array $containers = [];
 
