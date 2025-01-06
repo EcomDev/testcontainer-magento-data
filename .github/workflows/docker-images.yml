@@ -73,7 +73,7 @@ jobs:
         with:
           artifact: ${{ matrix.artifact }}
           containerType: ${{ matrix.containerType }}
-          imageName: ${{ github.repository_owner }}/testcontainer-magento-${{ matrix.containerType }}
+          imageName: ${{ github.repository }}/${{ matrix.containerType }}
           imageTags: ${{ matrix.tag }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
