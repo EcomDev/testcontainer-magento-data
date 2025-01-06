@@ -4,3 +4,4 @@ node_modules/
 !/build/.gitkeep
 /composer.lock
 /.idea/
+/target
