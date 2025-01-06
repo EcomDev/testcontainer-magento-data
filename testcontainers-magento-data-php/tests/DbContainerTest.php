@@ -104,7 +104,7 @@ class DbContainerTest extends TestCase
     public function generatesImageForSpecificMagentoVersion()
     {
         $this->assertEquals(
-            'ghcr.io/ecomdev/testcontainer-magento-mysql:2.4.7-p2-sampledata',
+            'ghcr.io/ecomdev/testcontainer-magento-data/mysql:2.4.7-p2-sampledata',
             DbContainerBuilder::mysql()
                 ->withSampleData()
                 ->withMagentoVersion('2.4.7-p2')
@@ -116,7 +116,7 @@ class DbContainerTest extends TestCase
     public function generatesMariadbImageForMagentoVersion()
     {
         $this->assertEquals(
-            'ghcr.io/ecomdev/testcontainer-magento-mariadb:2.4.7-p2-sampledata',
+            'ghcr.io/ecomdev/testcontainer-magento-data/mariadb:2.4.7-p2-sampledata',
             DbContainerBuilder::mariadb()
                 ->withSampleData()
                 ->withMagentoVersion('2.4.7-p2')

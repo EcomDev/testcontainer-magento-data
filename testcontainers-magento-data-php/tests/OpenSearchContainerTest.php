@@ -13,7 +13,7 @@ class OpenSearchContainerTest extends TestCase
     public function generatesDefaultImageNameWithLatestMagentoVersion()
     {
         $this->assertEquals(
-            'ghcr.io/ecomdev/testcontainer-magento-opensearch:latest',
+            'ghcr.io/ecomdev/testcontainer-magento-data/opensearch:latest',
             OpenSearchContainerBuilder::new()
              ->getImageName()
         );
@@ -24,7 +24,7 @@ class OpenSearchContainerTest extends TestCase
     public function generatesDefaultImageNameWithCustomMagentoVersion()
     {
         $this->assertEquals(
-            'ghcr.io/ecomdev/testcontainer-magento-opensearch:2.4.7-p2',
+            'ghcr.io/ecomdev/testcontainer-magento-data/opensearch:2.4.7-p2',
             OpenSearchContainerBuilder::new()
                 ->withMagentoVersion('2.4.7-p2')
                 ->getImageName()
@@ -36,7 +36,7 @@ class OpenSearchContainerTest extends TestCase
     public function generatesSampleDataImageNameWithCustomMagentoVersion()
     {
         $this->assertEquals(
-            'ghcr.io/ecomdev/testcontainer-magento-opensearch:2.4.7-p2-sampledata',
+            'ghcr.io/ecomdev/testcontainer-magento-data/opensearch:2.4.7-p2-sampledata',
             OpenSearchContainerBuilder::new()
                 ->withMagentoVersion('2.4.7-p2')
                 ->withSampleData()
