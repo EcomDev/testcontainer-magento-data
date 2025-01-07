@@ -1,0 +1,6 @@
+[workspace]
+resolver = "2"
+members = [
+    "testcontainers-magento-data-rust"
+]
+package = { rust-version = "1.81" }

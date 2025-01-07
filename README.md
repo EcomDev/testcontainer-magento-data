@@ -29,9 +29,13 @@ Each container image has a version tag with maximum software version supported b
 For now only `2.4.7` tags have `sampledata` (e.g. `2.4.7-p3-sampledata`) variation, as on previous version sample data deploy fails.
 
 ### Container images
-- **ghcr.io/ecomdev/testcontainer-magento-mysql** - Pre-populated MariaDB database container with relevant Magento schema and data
-- **ghcr.io/ecomdev/testcontainer-magento-mariadb** - Pre-populated MariaDB database container with relevant Magento schema and data
-- **ghcr.io/ecomdev/testcontainer-magento-opensearch** - Pre-populated OpenSearch container with relevant Magento indexes based on db data
+Container images are generated under such naming schema:
+`ghcr.io/ecomdev/testcontainer-magento-data/[IMAGE_NAME]` 
+
+With the following `IMAGE_NAME` variations:
+- `mysql` - Pre-populated MariaDB database container with relevant Magento schema and data
+- `mariadb` - Pre-populated MariaDB database container with relevant Magento schema and data
+- `opensearch` - Pre-populated OpenSearch container with relevant Magento indexes based on db data
 
 ## Usage in PHP
 
