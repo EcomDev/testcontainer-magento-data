@@ -41,8 +41,8 @@ With the following `IMAGE_NAME` variations:
 ## Prebuild Packages
 
 Packages available in the following languages to streamline usage of the Magento data image:
-- [ecomdev/testcontainers-magento-data](`https://github.com/EcomDev/testcontainer-magento-data-php`) composer package in PHP
-- [testcontainers-magento-data](`https://github.com/EcomDev/testcontainer-magento-data-rust`) cargo crate in Rust
+- [ecomdev/testcontainers-magento-data](https://github.com/EcomDev/testcontainer-magento-data-php) composer package in PHP
+- [testcontainers-magento-data](https://github.com/EcomDev/testcontainer-magento-data-rust) cargo crate in Rust
 
 ## 📜 License
 
