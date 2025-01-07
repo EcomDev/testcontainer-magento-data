@@ -1,8 +1,4 @@
 name: Docker Build
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
 on:
   schedule:
     - cron: '27 7 * * *'
@@ -57,6 +53,7 @@ jobs:
   build-container:
     runs-on: ubuntu-24.04
     needs: [generate-matrix, build-magento]
+    continue-on-error: ${{ contains(matrix.artifact, 'beta') || contains(matrix.artifact, 'alpha') }}
     permissions:
       packages: write
       contents: read
