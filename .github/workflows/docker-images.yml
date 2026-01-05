@@ -9,14 +9,14 @@ on:
       - .github/workflows/docker-images.yml
   workflow_dispatch:
     inputs:
-      magentoVersion:
-        description: 'Magento Version to limit execution to'
-        required: false
-        default: '2.4.6-p2'
-      magentoVariation:
-        description: 'Magento Variation to limit execution to'
-        required: false
-        default: default
+#      magentoVersion:
+#        description: 'Magento Version to limit execution to'
+#        required: false
+#        default: '2.4.6-p2'
+#      magentoVariation:
+#        description: 'Magento Variation to limit execution to'
+#        required: false
+#        default: default
 jobs:
   generate-matrix:
     runs-on: ubuntu-24.04
