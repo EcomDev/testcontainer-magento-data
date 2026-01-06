@@ -137,7 +137,6 @@ async function runDockerCompose(
   withOutput = false,
   options = {},
 ) {
-  const docker = await which("docker");
   args = ["compose", "-p", currentBuildId, action, ...args];
   return await runDocker(args, withOutput, options);
 }

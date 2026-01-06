@@ -6,12 +6,12 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "@actions/core": "^1.11.1",
-    "semver": "^7.6.3"
+    "@actions/core": "^2.0.1",
+    "semver": "^7.7.3"
   },
   "devDependencies": {
-    "prettier": "^3.4.2",
-    "@vercel/ncc": "^0.38.3"
+    "prettier": "^3.7.4",
+    "@vercel/ncc": "^0.38.4"
   },
   "exports": {
     ".": "./dist/index.js"
