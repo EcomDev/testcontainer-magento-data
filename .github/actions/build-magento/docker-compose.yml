@@ -28,6 +28,8 @@ services:
       TRAEFIK_DOMAIN: ${DOMAIN_NAME:-magento.test}
       TRAEFIK_SUBDOMAIN: ""
       NODE_VERSION: "16"
+      COMPOSER_NO_SECURITY_BLOCKING: 1
+      COMPOSER_NO_AUDIT: 1
     image: docker.io/wardenenv/php-fpm:${PHP_VERSION:-8.3}-magento2
     volumes:
       - ${HOME}/.composer:/home/www-data/.composer
