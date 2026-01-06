@@ -119,6 +119,8 @@ async function runDocker(args, withOutput = false, options = {}) {
       PHP_VERSION: getInput("php"),
       OPENSEARCH_VERSION: getInput("opensearch"),
       COMPOSER_AUTH: getInput("composerAuth"),
+      COMPOSER_NO_SECURITY_BLOCKING: 1,
+      COMPOSER_NO_AUDIT: 1,
       ...process.env,
     },
     ...options,
