@@ -1,0 +1,91 @@
+name: Docker Build
+on:
+  schedule:
+    - cron: '27 7 * * *'
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+    inputs:
+      months:
+        description: 'Number of months to collect supported Magento releases'
+        required: false
+        default: '24'
+jobs:
+  generate-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      builds: ${{ steps.matrix.outputs.builds }}
+      images: ${{ steps.matrix.outputs.images }}
+    steps:
+      - name: Generate Magento Version Matrix for Data Artifacts
+        uses: ecomdev/action-build-magento-matrix@v1.0.1
+        id: matrix
+        with:
+          months: ${{ cases(inputs.months > '0', inputs.months, '24') }}
+          sample-data: 'true'
+          include-prerelease: 'true'
+  build-magento:
+    runs-on: ubuntu-latest
+    needs: generate-matrix
+    strategy:
+      matrix:
+        include: ${{ fromJson(needs.generate-matrix.outputs.builds) }}
+    steps:
+      - uses: ecomdev/action-build-magento-data-artifact@v1.3.0
+        id: build
+        with:
+          name: '${{ matrix.name }}'
+          auth: '${{ secrets.COMPOSER_AUTH }}'
+          meta-package: 'magento/project-community-edition'
+          repository: 'https://repo.magento.com/'
+          magento-version: '${{ matrix.magentoVersion }}'
+          stability: '${{ matrix.stability }}'
+          mariadb-version: '${{ matrix.mariaDbVersion }}'
+          opensearch-version: '${{ matrix.openSearchVersion }}'
+          php-version: '${{ matrix.phpVersion }}'
+          sample-data: ${{ cases(matrix.sampleData, 'true', 'false') }}
+          token: '${{ github.token }}'
+  verify-artifact:
+    runs-on: ubuntu-latest
+    needs: [generate-matrix, build-magento]
+    continue-on-error: ${{ matrix.stability != 'stable' }}
+    strategy:
+      matrix:
+        include: ${{ fromJson(needs.generate-matrix.outputs.builds) }}
+    steps:
+      - run: mkdir -p verify-artifact
+      - name: download artifact
+        uses: actions/download-artifact@v8
+        with:
+          path: ./verify-artifact
+          name: ${{ matrix.name }}
+      - name: Verify archived data
+        working-directory: ./verify-artifact
+        run: test -f search.tgz && test -f media.tgz && test -f db.sql.gz
+  build-container:
+    runs-on: ubuntu-latest
+    needs: [generate-matrix, verify-artifact]
+    continue-on-error: ${{ matrix.stability != 'stable' }}
+    permissions:
+      packages: write
+      contents: read
+      attestations: write
+      id-token: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJson(needs.generate-matrix.outputs.images) }}
+    steps:
+      - uses: actions/checkout@v7
+      - name: Build linux/amd64 and linux/arm64 version of Docker image
+        uses: ecomdev/action-build-magento-image@v1.0.0
+        with:
+          artifact: ${{ matrix.artifact }}
+          containerType: ${{ matrix.containerType }}
+          imageName: ecomdev/testcontainer-magento-data/${{ matrix.containerType }}
+          imageTags: ${{ matrix.tag }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          version: ${{ matrix.version }}
+          push: ${{ github.event_name != 'pull_request' }}
+          platforms: 'linux/amd64,linux/arm64'
