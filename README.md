@@ -37,6 +37,6 @@ Packages available in the following languages to streamline usage of the Magento
 - [ecomdev/testcontainers-magento-data](https://github.com/EcomDev/testcontainer-magento-data-php) composer package in PHP
 - [testcontainers-magento-data](https://github.com/EcomDev/testcontainer-magento-data-rust) cargo crate in Rust
 
-## 📜 License
+## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+Licensed under the [Apache License, Version 2.0](./LICENSE). Copyright © EcomDev B.V.
