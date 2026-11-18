@@ -24,7 +24,7 @@ jobs:
         uses: ecomdev/action-build-magento-matrix@v1.0.1
         id: matrix
         with:
-          months: ${{ case(inputs.months > '0', inputs.months, '24') }}
+          months: ${{ case(inputs.months > '0', inputs.months, '6') }}
           sample-data: 'true'
           include-prerelease: 'true'
           version-api-url: 'https://magento.watch/api/v1/mage-os/versions'
