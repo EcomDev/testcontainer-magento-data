@@ -20,7 +20,7 @@ jobs:
       images: ${{ steps.matrix.outputs.images }}
     steps:
       - name: Generate Magento Version Matrix for Data Artifacts
-        uses: ecomdev/action-build-magento-image@v1.0.1
+        uses: ecomdev/action-build-magento-matrix@v1.0.1
         id: matrix
         with:
           months: ${{ case(inputs.months > '0', inputs.months, '6') }}
