@@ -4,6 +4,9 @@ on:
     - cron: '27 7 * * *'
   push:
     branches: [ "main" ]
+    paths-ignore:
+      - 'README.md'
+      - 'LICENSE.md'
   workflow_dispatch:
     inputs:
       months:
