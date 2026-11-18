@@ -21,7 +21,7 @@ jobs:
         uses: ecomdev/action-build-magento-matrix@v1.0.1
         id: matrix
         with:
-          months: ${{ cases(inputs.months > '0', inputs.months, '24') }}
+          months: ${{ case(inputs.months > '0', inputs.months, '24') }}
           sample-data: 'true'
           include-prerelease: 'true'
   build-magento:
