@@ -13,30 +13,23 @@ This package simplifies the process of automated testing with real database and 
 
 ## 📋 Requirements
 
-- **🐳 Docker**: Ensure Docker is installed and operational on your system.
+- **Docker**: Ensure Docker is installed and operational on your system.
 
 ## 📦 Available images
 
-Each container image has a version tag with maximum software version supported by the Magento. 
+Every day images generated 
 
-| Image Tag       | MariaDB Version | MySQL Version | OpenSearch |
-|-----------------|-----------------|---------------|------------|
-| 2.4.6-p7        | 10.6            | 8.0           | 2.12       |
-| 2.4.6-p8        | 10.6            | 8.0           | 2.12       |
-| 2.4.7-p2        | 10.6            | 8.0           | 2.12       |
-| 2.4.7-p3,latest | 10.6            | 8.0           | 2.12       |
-| 2.4.8-beta1     | 11.4            | 8.4           | 2.12       |
-
-For now only `2.4.7` tags have `sampledata` (e.g. `2.4.7-p3-sampledata`) variation, as on previous version sample data deploy fails.
+Each container image has a version tag with minimum supported version of data container (mysql, mariadb, opensearch) associated with Magento version.
 
 ### Container images
 Container images are generated under such naming schema:
-`ghcr.io/ecomdev/testcontainer-magento-data/[IMAGE_NAME]` 
+`ghcr.io/ecomdev/testcontainer-magento-data/[IMAGE_NAME]`
 
 With the following `IMAGE_NAME` variations:
 - `mysql` - Pre-populated MariaDB database container with relevant Magento schema and data
 - `mariadb` - Pre-populated MariaDB database container with relevant Magento schema and data
 - `opensearch` - Pre-populated OpenSearch container with relevant Magento indexes based on db data
+- `media` - Pre-populated media container with relevant Magento media files. Can be mounted into your own containers as `pub/media`
 
 ## Prebuild Packages
 
