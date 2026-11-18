@@ -4,9 +4,8 @@ on:
     - cron: '27 7 * * *'
   push:
     branches: [ "main" ]
-    paths-ignore:
-      - 'README.md'
-      - 'LICENSE.md'
+    paths:
+      - .github/workflows/mage-os-images.yml
   workflow_dispatch:
     inputs:
       months:
@@ -21,7 +20,7 @@ jobs:
       images: ${{ steps.matrix.outputs.images }}
     steps:
       - name: Generate Magento Version Matrix for Data Artifacts
-        uses: ecomdev/action-build-magento-matrix@v1.0.1
+        uses: ecomdev/action-build-magento-image@v1.0.1
         id: matrix
         with:
           months: ${{ case(inputs.months > '0', inputs.months, '6') }}
@@ -81,7 +80,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - name: Build linux/amd64 and linux/arm64 version of Docker image
-        uses: ecomdev/action-build-magento-image@v1.0.0
+        uses: ecomdev/action-build-magento-image@v1.0.1
         with:
           artifact: ${{ matrix.artifact }}
           containerType: ${{ matrix.containerType }}
