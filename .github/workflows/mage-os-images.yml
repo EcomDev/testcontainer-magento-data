@@ -32,7 +32,7 @@ jobs:
       matrix:
         include: ${{ fromJson(needs.generate-matrix.outputs.builds) }}
     steps:
-      - uses: ecomdev/action-build-magento-data-artifact@v1.3.0
+      - uses: ecomdev/action-build-magento-data-artifact@v1.4.0
         id: build
         with:
           name: '${{ matrix.name }}'
