@@ -1,7 +1,7 @@
 # 🐳 Test-Containers for Quick Magento Development
-[![Docker Build](https://github.com/EcomDev/testcontainer-magento-data/actions/workflows/docker-images.yml/badge.svg)](https://github.com/EcomDev/testcontainer-magento-data/actions/workflows/docker-images.yml)
-[![PHP Package](https://github.com/EcomDev/testcontainer-magento-data-php/actions/workflows/php-package.yml/badge.svg)](https://github.com/EcomDev/testcontainer-magento-data-php/actions/workflows/php-package.yml)
-[![Rust Package](https://github.com/EcomDev/testcontainer-magento-data-rust/actions/workflows/rust-package.yml/badge.svg)](https://github.com/EcomDev/testcontainer-magento-data-rust/actions/workflows/rust-package.yml)
+[![Magento Images](https://github.com/EcomDev/testcontainer-magento-data/actions/workflows/magento-images.yml/badge.svg)](https://github.com/EcomDev/testcontainer-magento-data/actions/workflows/magento-images.yml)
+
+[![Mage-OS Images](https://github.com/EcomDev/testcontainer-magento-data/actions/workflows/mage-os-images.yml/badge.svg)](https://github.com/EcomDev/testcontainer-magento-data/actions/workflows/mage-os-images.yml)
 
 This package simplifies the process of automated testing with real database and search engine
 
