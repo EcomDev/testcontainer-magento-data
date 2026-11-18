@@ -1,4 +1,4 @@
-name: Docker Build Magento OpenSource
+name: Docker Build Mage-OS
 on:
   schedule:
     - cron: '27 7 * * *'
@@ -12,7 +12,7 @@ on:
       months:
         description: 'Number of months to collect supported Magento releases'
         required: false
-        default: '24'
+        default: '6'
 jobs:
   generate-matrix:
     runs-on: ubuntu-latest
