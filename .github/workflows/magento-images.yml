@@ -1,4 +1,4 @@
-name: Docker Build
+name: Docker Build Magento OpenSource
 on:
   schedule:
     - cron: '27 7 * * *'
@@ -65,7 +65,7 @@ jobs:
   build-container:
     runs-on: ubuntu-latest
     needs: [generate-matrix, verify-artifact]
-    continue-on-error: ${{ matrix.stability != 'stable' }}
+    continue-on-error: ${{ contains(matrix.artifact, 'alpha') || contains(matrix.artifact, 'beta') || contains(matrix.artifact, 'rc') }}
     permissions:
       packages: write
       contents: read
