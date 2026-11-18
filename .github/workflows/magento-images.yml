@@ -43,7 +43,7 @@ jobs:
           mariadb-version: '${{ matrix.mariaDbVersion }}'
           opensearch-version: '${{ matrix.openSearchVersion }}'
           php-version: '${{ matrix.phpVersion }}'
-          sample-data: ${{ cases(matrix.sampleData, 'true', 'false') }}
+          sample-data: ${{ case(matrix.sampleData, 'true', 'false') }}
           token: '${{ github.token }}'
   verify-artifact:
     runs-on: ubuntu-latest
